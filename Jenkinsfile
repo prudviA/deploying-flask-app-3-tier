@@ -3,7 +3,7 @@ pipeline {
 
   environment {
     TF_DIR = 'terraform'
-    IMAGE = " prudhviachuth/devsecops-app:latest:${BUILD_NUMBER}"
+    IMAGE = "prudhviachuth/devsecops-app:latest-${BUILD_NUMBER}"
     CLUSTER = 'devsecops-cluster'
     REGION = 'ap-south-1'
   }
@@ -11,7 +11,7 @@ pipeline {
   stages {
     stage('Checkout') {
       steps {
-        git url: 'https://github.com/prudviA/deploying-3-tier-flask-app.git'
+        git branch: 'main', url: 'https://github.com/prudviA/deploying-flask-app.git'
       }
     }
 
