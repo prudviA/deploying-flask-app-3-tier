@@ -17,9 +17,14 @@ pipeline {
 
     stage('Terraform Init & Apply') {
       steps {
-        dir("${TF_DIR}") {
-          sh 'terraform init'
-          sh 'terraform apply -auto-approve'
+        withCredentials([[
+          $class: 'AmazonWebServicesCredentialsBinding', 
+          credentialsId: 'aws-creds'
+        ]]) {
+          dir("${TF_DIR}") {
+            sh 'terraform init'
+            sh 'terraform apply -auto-approve'
+          }
         }
       }
     }
@@ -41,10 +46,15 @@ pipeline {
 
     stage('Deploy to EKS') {
       steps {
-        sh '''
-        aws eks update-kubeconfig --region $REGION --name $CLUSTER
-        kubectl apply -f k8s-manifests/
-        '''
+        withCredentials([[
+          $class: 'AmazonWebServicesCredentialsBinding', 
+          credentialsId: 'aws-creds'
+        ]]) {
+          sh '''
+          aws eks update-kubeconfig --region $REGION --name $CLUSTER
+          kubectl apply -f k8s-manifests/
+          '''
+        }
       }
     }
 
