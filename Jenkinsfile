@@ -11,7 +11,7 @@ pipeline {
   stages {
     stage('Checkout') {
       steps {
-        git branch: 'main', url: 'https://github.com/prudviA/deploying-flask-app.git'
+        git branch: 'main', url: 'https://github.com/prudviA/deploying-flask-app-3-tier.git'
       }
     }
 
